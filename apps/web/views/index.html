@@ -50,11 +50,9 @@
 
     {{ if .Errors }}
     <div style="color:red">
-        <ul>
-            {{ range .Errors }}
-            <li> {{ . }} </li>
-            {{ end }}
-        </ul>
+        {{ range .Errors }}
+        <p> {{ . }} </p>
+        {{ end }}
     </div>
     {{ end }}
 
@@ -85,6 +83,11 @@
         <input type="number" id="soda" name="soda" {{ if .Values.soda }} value="{{ .Values.soda }}" {{ else }} value="0"
             {{ end }} min="0" max="20" readonly>
         <button type="button" onclick="changeQuantity('soda', 1)">+</button>
+    </div>
+    <div class="menu-item">
+        <label for="name">Your name:</label>
+        <input class="text" type="text" id="name" name="name" {{ if .Values.name }} value="{{ .Values.name }}" {{ else
+            }} value="" {{ end }}>
     </div>
 
     <button type="submit">Place Order</button>
