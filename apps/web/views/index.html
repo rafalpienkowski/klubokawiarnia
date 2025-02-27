@@ -11,10 +11,89 @@
     <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 
-
 <body>
     <h1>Klubokawiarnia</h1>
+    {{ template "form" .Form }}
+    <hr />
+    <div id="confirmation"></div>
+
+    <h2>Orders:</h2>
+    <div id="orderDashboard" class="dashboard">
+        <p>No orders yet</p>
+    </div>
+
+    <script>
+        function changeQuantity(id, delta) {
+            const input = document.getElementById(id);
+            let value = parseInt(input.value, 10) + delta;
+            if (value < 0) value = 0;
+            if (value > 20) value = 20;
+            input.value = value;
+        }
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+            document.body.addEventListener('htmx:beforeSwap', function (evt) {
+                if (evt.detail.xhr.status == 422) {
+                    evt.detail.shouldSwap = true;
+                    evt.detail.isError = false;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
+{{ end }}
+
+{{ block "form" . }}
+<form hx-swap="outerHTML" hx-post="/order">
+
+    {{ if .Errors }}
+    <div style="color:red">
+        <ul>
+            {{ range .Errors }}
+            <li> {{ . }} </li>
+            {{ end }}
+        </ul>
+    </div>
+    {{ end }}
+
+    <div class="menu-item">
+        <label for="tea">☕ Tea - $2.50</label>
+        <button type="button" onclick="changeQuantity('tea', -1)">-</button>
+        <input type="number" id="tea" name="tea" {{ if .Values.tea }} value="{{ .Values.tea }}" {{ else }} value="0" {{
+            end }} min="0" max="20" readonly>
+        <button type="button" onclick="changeQuantity('tea', 1)">+</button>
+    </div>
+    <div class="menu-item">
+        <label for="coffee">☕ Coffee - $3.00</label>
+        <button type="button" onclick="changeQuantity('coffee', -1)">-</button>
+        <input type="number" id="coffee" name="coffee" {{ if .Values.coffee }} value="{{ .Values.coffee }}" {{ else }}
+            value="0" {{ end }} min="0" max="20" readonly>
+        <button type="button" onclick="changeQuantity('coffee', 1)">+</button>
+    </div>
+    <div class="menu-item">
+        <label for="cake">🍰 Cake - $4.00</label>
+        <button type="button" onclick="changeQuantity('cake', -1)">-</button>
+        <input type="number" id="cake" name="cake" {{ if .Values.cake }} value="{{ .Values.cake }}" {{ else }} value="0"
+            {{ end }} min="0" max="20" readonly>
+        <button type="button" onclick="changeQuantity('cake', 1)">+</button>
+    </div>
+    <div class="menu-item">
+        <label for="soda">🥤 Soda - $2.00</label>
+        <button type="button" onclick="changeQuantity('soda', -1)">-</button>
+        <input type="number" id="soda" name="soda" {{ if .Values.soda }} value="{{ .Values.soda }}" {{ else }} value="0"
+            {{ end }} min="0" max="20" readonly>
+        <button type="button" onclick="changeQuantity('soda', 1)">+</button>
+    </div>
+
+    <button type="submit">Place Order</button>
+</form>
+{{ end }}
+
+{{ block "confirmation" . }}
+<div id="confirmation" hx-swap-oob="true">
+    {{ . }}
+    <hr />
+</div>
 {{ end }}

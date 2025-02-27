@@ -33,6 +33,7 @@ tmp_dir = "tmp"
   watcher = "cyan"
 
 [log]
+  level = "debug"
   main_only = false
   time = false
 

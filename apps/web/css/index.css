@@ -1,0 +1,29 @@
+body { 
+    font-family: Arial, sans-serif; 
+    max-width: 600px; 
+    margin: auto; 
+}
+
+.menu-item { 
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.menu-item label { 
+    flex: 1; 
+}
+
+.menu-item input { 
+    width: 40px; text-align: center;
+}
+
+.icon { 
+    margin-right: 10px; 
+}
+
+.dashboard { 
+    margin-top: 20px; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+}
