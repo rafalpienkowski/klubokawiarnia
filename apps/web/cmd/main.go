@@ -123,7 +123,7 @@ func main() {
 
 		c.Render(200, "form", newFormData())
 
-		orderId := order.Name + "-" + time.Now().Format("2006-01-02 15:04:05.350")
+		orderId := order.Name + "-" + time.Now().UTC().Format("2006-01-02 15:04:05.350")
 		return c.Render(200, "confirmation", fmt.Sprintf("Your order id is: %v", orderId))
 	})
 
